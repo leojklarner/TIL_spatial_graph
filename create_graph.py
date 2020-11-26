@@ -3,18 +3,34 @@ A script that contains functions extracting the cluster medoid from a .csv file
 """
 
 import pandas as pd
+import os
+import re
 
-def extract_medoids(file_path):
+
+def get_file_locations(path_to_metadata, data_directory):
     """
-    Extracts the data from a given csv file, calculates and returns the medoids
-    :param file_path: the location of the file to extract
-    :return: medoids with their coordinates
+    This function extracts the file paths to all csv file for which
+    metadata is available nad returns them as a dict
+    :param path_to_metadata: the location of the metadata file
+    :param data_directory: the directory containing the data csv files
+    :return: a dict with the names of the slides as keys and the
+             directories as arguments
     """
 
-    locations = pd.read_csv(file_path)
-    print(locations)
+    # get a list with the IDs of the slides that have metadata
+    slides_with_metadata = pd.read_csv(path_to_metadata, usecols=["SlideID"])["SlideID"].to_list()
+
+    # extract the file paths of all the slide IDs in the above list
+    slide_paths = {}
+    id_stem = re.compile("(.*?)_clusters.csv")
+    for cancer_type in os.listdir(data_directory):
+        for slide in os.listdir(data_directory+'/'+cancer_type):
+            file_id = re.findall(id_stem, slide)[0]
+            if file_id in slides_with_metadata:
+                slide_paths[file_id] = data_directory+'/'+cancer_type+'/'+slide
+
+    return slide_paths
+
 
 if __name__ == '__main__':
-    file_name = "cluster_assignments/brca/TCGA-LL-A442-01Z-00-DX1_clusters.csv"
-    path = 'cluster_assignments/brca/'
-    extract_medoids(file_path=file_name)
+    print(get_file_locations("metadata.csv", './cluster_assignments'))
