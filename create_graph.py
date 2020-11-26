@@ -11,7 +11,7 @@ import itertools
 from scipy.spatial.distance import euclidean
 
 
-def extract_centroids(file_path):
+def centroids_to_graph(file_path):
     """
     Extracts the data from a given csv file, calculates the centroids and builds a graph
     :param file_path: the location of the file to extract
@@ -39,4 +39,4 @@ def extract_centroids(file_path):
 
 if __name__ == '__main__':
     file_name = "cluster_assignments/brca/TCGA-3C-AALI-01Z-00-DX1_clusters.csv"
-    extract_centroids(file_path=file_name)
+    centroids_to_graph(file_path=file_name)

@@ -1,5 +1,6 @@
 from utilities import get_file_locations
 from calculate_statistics import calculate_metrics
+from create_graph import centroids_to_graph
 import os.path
 import time
 
@@ -21,7 +22,7 @@ for name, path in locations.items():
     subroutine_start = time.time()
     print(f'Starting routine for {path}')
 
-    slide_graph = 0
+    slide_graph = centroids_to_graph(path)
 
     subroutine_middle = time.time()
     print(f'Calculated graph for {path} in {subroutine_middle-subroutine_start}')
