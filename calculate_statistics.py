@@ -4,8 +4,6 @@ the desired graph metrics and save them to a .csv file
 """
 
 import networkx as nx
-from networkx.algorithms.centrality import degree_centrality
-import matplotlib.pyplot as plt
 
 
 def calculate_metrics(slide_name, graph, output_file):
