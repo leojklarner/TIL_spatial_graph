@@ -15,8 +15,6 @@ def calculate_metrics(slide_name, graph, output_file):
     :return: write the respective metrics to a file
     """
 
-    print(f'Calculating metrics for {slide_name}')
-
     # calculate the average clustering coefficient
     average_clustering_coefficient = nx.algorithms.average_clustering(graph)
 
@@ -51,8 +49,6 @@ def calculate_metrics(slide_name, graph, output_file):
         output.write(f'{slide_name},{average_clustering_coefficient},{average_degree},'
                      f'{average_closeness_centrality},{average_betweenness_centrality},'
                      f'{average_eccentricity}\n')
-
-    print(f'Metrics calculated for {slide_name}')
 
 
 if __name__ == '__main__':

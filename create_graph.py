@@ -1,47 +1,42 @@
 """
-A script that contains functions extracting the cluster medoid from a .csv file
+A script that contains functions extracting the cluster centroid from a .csv file
 """
-from sklearn.cluster import KMeans
-from sklearn import metrics
-import numpy as np
-import matplotlib.pyplot as plt
+
 import pandas as pd
+import sklearn as sk
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+import itertools
+from scipy.spatial.distance import euclidean
 
-def extract_medoids(file_path):
+
+def extract_centroids(file_path):
     """
-    Extracts the data from a given csv file, calculates and returns the medoids
+    Extracts the data from a given csv file, calculates the centroids and builds a graph
     :param file_path: the location of the file to extract
-    :return: medoids with their coordinates
+    :return: centroids with their coordinates
     """
 
-    locations = pd.read_csv(file_path)
-    print(locations)
-    x = locations['x']
-    y = locations['y']
-    
+    # extract centroid data
+    location_data = pd.read_csv(file_path)
+    centroids = location_data.groupby(by=["cluster_id"]).mean()
 
-    plt.plot()
-    X = np.array(list(zip(x, y))).reshape(len(x), 2)
-    colors = ['b', 'g', 'c']
-    markers = ['o', 'v', 's']
+    cluster_id = centroids.index.tolist()
+    coordinates = np.column_stack([centroids['x'].values, centroids['y'].values])
 
-    # KMeans algorithm 
-    K = 3
-    kmeans_model = KMeans(n_clusters=K).fit(X)
+    # create graph and add nodes
+    G = nx.Graph()
+    G.add_nodes_from(cluster_id)
 
-    print(kmeans_model.cluster_centers_)
-    centers = np.array(kmeans_model.cluster_centers_)
+    # add edges
+    for idx1 in range(0, len(cluster_id)):
+        for idx2 in range(idx1+1, len(cluster_id)):
+            distance = euclidean(coordinates[idx1], coordinates[idx2])
+            G.add_edge(cluster_id[idx1], cluster_id[idx2], weight=distance)
 
-    plt.plot()
-    plt.title('k means centroids')
-
-    for i, l in enumerate(kmeans_model.labels_):
-        plt.plot(x[i], y[i], color=colors[l], marker=markers[l],ls='None')
-
-    plt.scatter(centers[:,0], centers[:,1], marker="x", color='r')
-    plt.show()
+    return G
 
 if __name__ == '__main__':
-    file_name = "cluster_assignments/brca/TCGA-LL-A442-01Z-00-DX1_clusters.csv"
-    path = 'cluster_assignments/brca/'
-    extract_medoids(file_path=file_name)
+    file_name = "cluster_assignments/brca/TCGA-3C-AALI-01Z-00-DX1_clusters.csv"
+    extract_centroids(file_path=file_name)
