@@ -14,7 +14,7 @@ locations = get_file_locations('metadata.csv', 'cluster_assignments')
 # creating an output file to which to append the results
 if not os.path.isfile(output_file_path):
     with open(output_file_path,'w') as output:
-        output.write('slide_name,average_clustering_coefficient},average_degree,'
+        output.write('slide_name,average_clustering_coefficient,average_degree,'
                      'average_closeness_centrality,average_betweenness_centrality,'
                      'average_shortest_path,max_clique_num,max_clique_weight,'
                      'average_neighbour_degree,average_degree_connectivity,'
