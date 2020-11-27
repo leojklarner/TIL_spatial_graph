@@ -1,4 +1,4 @@
-slide_name,average_clustering_coefficient,average_degree,average_closeness_centrality, average_betweenness_centrality,average_shortest_path}
+slide_name,average_clustering_coefficient,average_degree,average_closeness_centrality, average_betweenness_centrality,average_shortest_path
 TCGA-2F-A9KP-01Z-00-DX1,0.43555627527372276,4888.827994327658,0.004395303271240046,0.0,232.80133306322156
 TCGA-2F-A9KT-01Z-00-DX1,0.39888616220069034,8874.167333758362,0.004532008685278031,0.0,227.54275214765016
 TCGA-2F-A9KW-01Z-00-DX1,0.4169913683460622,4973.4474367441,0.004778326443434744,0.0,216.23684507583042

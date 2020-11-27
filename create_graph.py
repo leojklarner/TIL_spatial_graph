@@ -20,18 +20,22 @@ def centroids_to_graph(file_path):
 
     # extract centroid data
     location_data = pd.read_csv(file_path)
-    centroids = location_data.groupby(by=["cluster_id"]).mean()
+    grouped = location_data.groupby(by=["cluster_id"])
+    centroids = grouped.mean()
 
     cluster_id = centroids.index.tolist()
     coordinates = np.column_stack([centroids['x'].values, centroids['y'].values])
 
-    # create graph and add nodes
+    # create graph
     G = nx.Graph()
-    G.add_nodes_from(cluster_id)
 
-    # add edges
-    for idx1 in range(0, len(cluster_id)):
-        for idx2 in range(idx1+1, len(cluster_id)):
+    # add nodes weighted by size
+    for cluster_ID, size in grouped.size().iteritems():
+        G.add_node(cluster_ID, weight=size)
+
+    # add edges weighted by euclidean distance
+    for idx1 in range(0, len(G.nodes)):
+        for idx2 in range(idx1+1, len(G.nodes)):
             distance = euclidean(coordinates[idx1], coordinates[idx2])
             G.add_edge(cluster_id[idx1], cluster_id[idx2], weight=distance)
 
