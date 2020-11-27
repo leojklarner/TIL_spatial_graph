@@ -28,7 +28,7 @@ def plot_vital_status(data, output_path, statistics):
     plot_data = pd.melt(data, id_vars="vital_status", value_vars=significant_statistics, var_name='metrics')
 
     g = sns.catplot(data=plot_data, x="vital_status", y="value", sharex=False, col="metrics",col_wrap=3,
-                    sharey=False, kind="point", linestyles=["--"], color='black')
+                    sharey=False, kind="point", linestyles=["--"], capsize=.2, color='black')
     for ax, title in zip(g.axes.flat, titles):
         ax.set_title(title, fontsize=15)
     g.set_xlabels("")
@@ -59,7 +59,7 @@ def plot_gender(data, output_path, statistics):
     plot_data = pd.melt(data, id_vars="gender", value_vars=significant_statistics, var_name='metrics')
 
     g = sns.catplot(data=plot_data, x="gender", y="value", sharex=False, col="metrics",col_wrap=3,
-                    sharey=False, kind="point", linestyles=["--"], color='black')
+                    sharey=False, kind="point", linestyles=["--"],capsize=.2, color='black')
     for ax, title in zip(g.axes.flat, titles):
         ax.set_title(title, fontsize=15)
     g.set_xlabels("")
